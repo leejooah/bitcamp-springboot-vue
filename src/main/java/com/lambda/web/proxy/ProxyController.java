@@ -24,4 +24,11 @@ public class ProxyController {
         box.put("count", list.size());
         return box.get();
     }
+
+    @PostMapping("/soccer")
+    public HashMap<String,Object> soccer(@RequestBody String searchWord){
+        pxy.print("넘어온 키워드 =" +searchWord);
+        return null;
+    }
+
 }
