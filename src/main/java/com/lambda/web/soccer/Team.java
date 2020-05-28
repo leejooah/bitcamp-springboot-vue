@@ -3,6 +3,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 

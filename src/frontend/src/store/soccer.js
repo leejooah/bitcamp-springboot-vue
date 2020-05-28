@@ -1,18 +1,17 @@
 import axios from 'axios'
+import router from '@/router'
 const state = {
-    context : 'http://localhost:5000/'
+    context : 'http://localhost:5000/',
+    soccer : []
 }
 const actions = {
     async search({commit},payload){
-        const url = state.context+`proxy/soccer`
-        const headers = {
-            authorization: 'JWT fefege..',
-            Accept : 'application/json',
-            'Content-Type': 'application/json'
-        }
-        axios.post(url,payload,headers)
-            .then(()=>{
-                commit('search')
+        const url = state.context+"proxy/soccer/"
+
+        axios.get(url+payload)
+            .then(({data})=>{
+                commit('search',data)
+                router.push("/home")
             })
             .catch(()=>{
                 alert('서버연결실패')

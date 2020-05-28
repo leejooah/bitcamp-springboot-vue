@@ -1,10 +1,12 @@
 package com.lambda.web.proxy;
 
+import com.lambda.web.music.Music;
+import com.lambda.web.music.MusicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @CrossOrigin(origins="*", allowedHeaders = "*")
 @RequestMapping("/proxy")
@@ -13,22 +15,25 @@ public class ProxyController {
     @Autowired Crawler crawler;
     @Autowired Box<Object> box;
     @Autowired Proxy pxy;
+    @Autowired FileUploader uploader;
+    @Autowired MusicRepository musicRepository;
     @PostMapping("/bugsmusic")
     public  HashMap<String, Object> list(@RequestBody String searchWord){
         pxy.print("넘어온 키워드 = " +searchWord );
         box.clear();
-        ArrayList<HashMap<String, String>> list =  crawler.bugsMusic();
+        if (musicRepository.count() ==0)crawler.bugsMusic();
+        List<Music> list =  musicRepository.findAll();
         box.put("list", list);
-        pxy.print("****************");
-        pxy.print("조회한 수= " +list.size() );
         box.put("count", list.size());
         return box.get();
     }
 
-    @PostMapping("/soccer")
-    public HashMap<String,Object> soccer(@RequestBody String searchWord){
+    @GetMapping("/soccer/{searchWord}")
+    public HashMap<String,String> soccer(@PathVariable String searchWord){
         pxy.print("넘어온 키워드 =" +searchWord);
+        uploader.upload();
         return null;
     }
+
 
 }

@@ -1,25 +1,26 @@
 package com.lambda.web.proxy;
 
+import com.lambda.web.music.Music;
+import com.lambda.web.music.MusicBuilder;
+import com.lambda.web.music.MusicRepository;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import  org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
+import org.springframework.stereotype.Service;
 import java.util.HashMap;
 
-@Component("crawler")  @Lazy
+@Service("crawler")  @Lazy
 public class Crawler extends Proxy{
-    @Autowired Inventory<HashMap<String, String>> inventory;
+    @Autowired Inventory<Music> inventory;
     @Autowired Box<String> box;
-    public ArrayList<HashMap<String, String>> bugsMusic(){
+    @Autowired MusicRepository musicRepository;
+    public void bugsMusic(){
         inventory.clear();
         try{
-            String url = "1";
+            String url = "https://music.bugs.co.kr/chart";
             Connection.Response homepage = Jsoup.connect(url).method(Connection.Method.GET)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
                     .execute();
@@ -29,18 +30,18 @@ public class Crawler extends Proxy{
             Elements thumbnail = d.select("a.thumbnail");
             HashMap<String, String> map = null;
             for(int i=0;i < title.size(); i++){
-                map = new HashMap<>();
-                map.put("seq", string(i+1));
-                map.put("title", title.get(i).text());
-                map.put("artists", artist.get(i).text());
-                map.put("thumbnail", thumbnail.get(i).select("img").attr("src"));
-                inventory.add(map);
+                Music m =new MusicBuilder().createMusic();
+                m.setSeq(string(i+1));
+                m.setTitle(title.get(i).text());
+                m.setArtists(artist.get(i).text());
+                m.setThumbnail(thumbnail.get(i).select("img").attr("src"));
+                musicRepository.save(m);
+
             }
         }catch(Exception e){
             print("에러 발생");
+            e.printStackTrace();
         }
-        print("******************** 크롤링 결과 *****************");
-        inventory.get().forEach(System.out::print);
-        return inventory.get();
+
     }
 }

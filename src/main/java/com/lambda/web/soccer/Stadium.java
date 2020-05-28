@@ -1,6 +1,7 @@
 package com.lambda.web.soccer;
 import javax.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
