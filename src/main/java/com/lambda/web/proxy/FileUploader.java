@@ -1,7 +1,5 @@
 package com.lambda.web.proxy;
 
-import com.lambda.web.music.Music;
-import com.lambda.web.music.MusicBuilder;
 import com.lambda.web.music.MusicRepository;
 import com.lambda.web.soccer.Player;
 import com.lambda.web.soccer.PlayerBuilder;
@@ -13,8 +11,6 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service("uploader") @Lazy
 public class FileUploader extends Proxy{

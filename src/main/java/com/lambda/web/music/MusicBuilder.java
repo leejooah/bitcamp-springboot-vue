@@ -5,7 +5,6 @@ public class MusicBuilder {
     private String title;
     private String artists;
     private String thumbnail;
-    private Long musicNo;
 
     public MusicBuilder setSeq(String seq) {
         this.seq = seq;
@@ -24,11 +23,6 @@ public class MusicBuilder {
 
     public MusicBuilder setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
-        return this;
-    }
-
-    public MusicBuilder setMusicNo(Long musicNo) {
-        this.musicNo = musicNo;
         return this;
     }
 

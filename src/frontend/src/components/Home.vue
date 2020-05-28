@@ -30,6 +30,9 @@
                 switch (this.searchWord) {
                     case '벅스뮤직': this.$store.dispatch('crawling/search', this.searchWord); break;
                     case '축구':  this.$store.dispatch('soccer/search', this.searchWord); break;
+                    case '네이버영화':
+                        this.$store.dispatch('crawling/moviesearch', this.searchWord); break;
+
                 }
             }
 
