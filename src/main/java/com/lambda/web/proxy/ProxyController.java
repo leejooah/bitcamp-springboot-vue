@@ -23,12 +23,13 @@ public class ProxyController {
     MovieRepository movieRepository;
     @PostMapping("/crawling")
     public  HashMap<String, Object> list(@RequestBody String searchWord){
+        System.out.println("넘어온 키워드 = " + searchWord);
         box.clear();
             if (musicRepository.count() ==0)crawler.bugsMusic();
             List<Music> list =  musicRepository.findAll();
             box.put("list", list);
             box.put("count", list.size());
-
+        box.put("type", "벅스뮤직");
         return box.get();
     }
 
@@ -38,13 +39,15 @@ public class ProxyController {
         return null;
     }
 
-    @GetMapping("/navermovie/{searchWord}")
-    public HashMap<String,Object> naverMovie(@PathVariable String searchWord){
+    @GetMapping("/crawling/{searchWord}")
+    public HashMap<String,Object> search(@PathVariable String searchWord){
+        System.out.println("넘어온 키워드 ="  +searchWord);
         box.clear();
-        if (movieRepository.count() ==0)crawler.naverMovie();
-        List<Movie> list =  movieRepository.findAll();
-        box.put("list", list);
-        box.put("count", list.size());
+            if (movieRepository.count() ==0)crawler.naverMovie();
+            List<Movie> list =  movieRepository.findAll();
+            box.put("list", list);
+            box.put("count", list.size());
+            box.put("type", "네이버영화");
 
         return box.get();
     }

@@ -55,11 +55,14 @@ public class Crawler extends Proxy{
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
                     .execute();
             Document d = homepage.parse();
-
+Elements rankDate = d.select("p.r_date");
+Elements rank = d.select("td.ac");
              Elements title = d.select("div.tit3");
              for (int i=0; i < title.size(); i++){
                  Movie m =new MovieBuilder().createMovie();
+                 m.setRank(string(i+1));
                  m.setTitle(title.get(i).text());
+                m.setRankDate(rankDate.get(0).text());
                  movieRepository.save(m);
 
              }
