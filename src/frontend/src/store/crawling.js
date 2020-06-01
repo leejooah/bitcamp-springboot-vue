@@ -4,7 +4,6 @@ const state = {
     context : 'http://localhost:5000/',
    searchResult : [],
     count : 0,
-    type : '',
 
 
 }
@@ -44,10 +43,10 @@ const actions = {
                 break;
 
             case '네이버영화' :
-                axios.get(state.context +`proxy/crawling/`+searchWord)
+                axios.get(state.context +`movie/list/0/${searchWord}`)
                     .then(({data})=>{
-                        commit('search',data)
-
+                        commit('movie',data)
+                        router.push('/movieView')
                     })
                     .catch(()=>
                     {
@@ -66,24 +65,27 @@ const mutations = {
        state.count = data.count
         alert('뮤테이션 진입')
         alert('넘어온 데이터 타입 ='+data.type)
-        if (data.type==='벅스뮤직'){
-            data.list.forEach( (item)=>{
+
+            data.list.forEach( (item)=> {
                 state.searchResult.push({
-                    seq : item.seq, artists : item.artists, title : item.title, thumbnail : item.thumbnail})
-              })
-            router.push('/retriever')
-        }else if(data.type==='네이버영화'){
-            alert(data.type)
-            data.list.forEach( (item)=>{
-            state.searchResult.push({
-                rank : item.rank, title : item.title, rankDate : item.rankDate})
+                    seq: item.seq, artists: item.artists, title: item.title, thumbnail: item.thumbnail
+                })
             })
             router.push('/retriever')
-        }
 
-state.type=data.type
-        alert('state에 있는 데이터 타입 = '+state.type)
+
     },
+
+    movie(state,data){
+        alert('뮤테이션에서 결과 수 : ' +data.count)
+    state.searchResult=[]
+    state.count=data.count
+    data.list.forEach( (item)=>{
+        state.searchResult.push({
+            movieSeq: item.movieSeq, rank : item.rank, title : item.title,  rankDate : item.rankDate})
+    })
+
+}
 
 
 }

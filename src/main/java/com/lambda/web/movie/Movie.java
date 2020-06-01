@@ -1,11 +1,15 @@
 package com.lambda.web.movie;
 
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-
+@Getter
+@Setter
+@ToString
 @Component
 @Entity(name = "movie")
+@NoArgsConstructor
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,39 +21,7 @@ public class Movie {
     @Column(length = 10)
     private String rankDate;
 
-    public Movie(){};
-
+@Builder
     public Movie( String title, String rank, String rankDate){ this.rankDate = rankDate; this.rank=rank; this.title = title;}
 
-    public Long getMovieSeq() {
-        return movieSeq;
-    }
-
-    public void setMovieSeq(Long movieSeq) {
-        this.movieSeq = movieSeq;
-    }
-
-    public String getRank() {
-        return rank;
-    }
-
-    public void setRank(String rank) {
-        this.rank = rank;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getRankDate() {
-        return rankDate;
-    }
-
-    public void setRankDate(String rankDate) {
-        this.rankDate = rankDate;
-    }
 }

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Component;
 @Component
 public class MovieDTO {
     private String movieSeq, title, rank, rankDate;
+
 }

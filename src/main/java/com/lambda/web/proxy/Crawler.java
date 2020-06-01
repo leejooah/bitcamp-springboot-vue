@@ -1,10 +1,8 @@
 package com.lambda.web.proxy;
 
 import com.lambda.web.movie.Movie;
-import com.lambda.web.movie.MovieBuilder;
 import com.lambda.web.movie.MovieRepository;
 import com.lambda.web.music.Music;
-import com.lambda.web.music.MusicBuilder;
 import com.lambda.web.music.MusicRepository;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -33,7 +31,7 @@ public class Crawler extends Proxy{
             Elements artist = d.select("p.artist");
             Elements thumbnail = d.select("a.thumbnail");
             for(int i=0;i < title.size(); i++){
-                Music m =new MusicBuilder().createMusic();
+                Music m =new Music();
                 m.setSeq(string(i+1));
                 m.setTitle(title.get(i).text());
                 m.setArtists(artist.get(i).text());
@@ -59,7 +57,7 @@ Elements rankDate = d.select("p.r_date");
 Elements rank = d.select("td.ac");
              Elements title = d.select("div.tit3");
              for (int i=0; i < title.size(); i++){
-                 Movie m =new MovieBuilder().createMovie();
+                 Movie m =new Movie();
                  m.setRank(string(i+1));
                  m.setTitle(title.get(i).text());
                 m.setRankDate(rankDate.get(0).text());
