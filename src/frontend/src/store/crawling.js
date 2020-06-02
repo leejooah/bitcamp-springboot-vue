@@ -77,9 +77,8 @@ const mutations = {
     },
 
     movie(state,data){
-        alert('뮤테이션에서 결과 수 : ' +data.count)
     state.searchResult=[]
-    state.count=data.count
+    state.count=data.pager.rowCount
     data.list.forEach( (item)=>{
         state.searchResult.push({
             movieSeq: item.movieSeq, rank : item.rank, title : item.title,  rankDate : item.rankDate})

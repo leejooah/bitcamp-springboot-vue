@@ -32,6 +32,7 @@ MovieMapper movieMapper;
         pager.setNowPage(pxy.integar(pageNumber));
         pager.setBlockSize(5);
         pager.setPageSize(5);
+        pager.paging();
         IFunction<Pager, List<MovieDTO>> f =p-> movieMapper.selectMovies(p);
         List<MovieDTO> l = f.apply(pager);
         pxy.print("***********");
@@ -39,8 +40,8 @@ MovieMapper movieMapper;
             pxy.print(m.toString());
         }
         box.clear();
-        box.put("count",l.size());
         box.put("list",l);
+        box.put("pager", pager);
         return box.get();
     }
     }
