@@ -28,6 +28,7 @@ MovieMapper movieMapper;
         }else{
             pxy.print("검색어"+searchWord);
         }
+        pxy.print(pageNumber);
         if (movieRepository.count() ==0)crawler.naverMovie();
         pager.setNowPage(pxy.integar(pageNumber));
         pager.setBlockSize(5);

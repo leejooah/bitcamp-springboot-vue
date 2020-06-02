@@ -36,7 +36,7 @@ preBlock = startPage-blockSize; //이전블럭의 첫번째페이지
 nextBlock = startPage+blockSize;  //다음블럭의 첫번째페이지
 
 existPrev = nowBlock!=0;
-existNext = nowBlock !=blockCount;
+existNext = (nowBlock+1) !=blockCount;
 }
 
 

@@ -27,15 +27,6 @@ const actions = {
 
 }
 const mutations = {
-    movie(state,data){
-        state.movies=[]
-        state.pager=data.pager
-        data.list.forEach( (item)=>{
-            state.movies.push({
-                movieSeq: item.movieSeq, rank : item.rank, title : item.title,  rankDate : item.rankDate})
-        })
-
-    },
     searchWord(state,data){
         alert(`뮤테이션:: ${data}`)
         state.searchWord = data

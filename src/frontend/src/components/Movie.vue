@@ -25,9 +25,9 @@
                 </v-simple-table>
             <div class="text-center">
                 <div style="margin: 0 auto; width: 500px; height: 100px;"></div>
-                <span v-if="existPrev" style="width: 50px; height: 50px; border: 1px solid #000000; margin: 5px">이전</span>
+                <span v-if="pager.existPrev" style="width: 50px; height: 50px; border: 1px solid #000000; margin: 5px">이전</span>
                 <span style="width: 50px; height: 50px; border: 1px solid black;  margin: 5px"  v-for="i of pages" :key="i">{{i}}</span>
-                <span v-if = "existNext" style="width: 50px; height: 50px; border: 1px solid black;  margin: 5px">다음</span>
+                <span v-if = "pager.existNext" style="width: 50px; height: 50px; border: 1px solid black;  margin: 5px">다음</span>
             </div>
 
 <!--                        <v-pagination-->
@@ -44,15 +44,14 @@
     import {mapState} from 'vuex'
     import axios from "axios";
     export default {
-        name: "Retriever",
+        name: "Movie",
         data () {
                 return {
-                     existPrev : false, existNext : true,
-                   pages : [1,2,3,4,5],
-                    pageNumber : 0,
+                    pageNumber: 0,
+                   pages : [],
                     list :[],
                     pager : {},
-                    totalCount : '',
+                    totalCount : ''
             }
         },
         created() {
@@ -60,6 +59,13 @@
                 .then(res=>{
                    res.data.list.forEach(elem=>this.list.push(elem))
                     this.pager= res.data.pager
+                    let i =  this.pager.startPage+1
+                    let arr = []
+                    console.log(`페이지 끝 : ${this.pager.endPage}`)
+                    for(; i<= this.pager.endPage+1;i++){
+                        arr.push(i)
+                    }
+                    this.pages=arr
                 })
                 .catch(()=>{
                     alert('영화 통신 실패')
