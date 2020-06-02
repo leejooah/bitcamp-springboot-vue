@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-container>
-            <h3>총 결과 : {{count}}</h3>
+            <h3>총 결과 : {{pager.rowCount}}</h3>
                 <v-simple-table>
                     <template v-slot:default>
                             <thead>
@@ -14,7 +14,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="item of searchResult" :key="item.movieSeq">
+                            <tr v-for="item of list" :key="item.movieSeq">
                                 <td>{{item.movieSeq}}</td>
                                 <td>{{ item.rank}}</td>
                                 <td>{{item.title}}</td>
@@ -26,7 +26,7 @@
             <div class="text-center">
                 <div style="margin: 0 auto; width: 500px; height: 100px;"></div>
                 <span v-if="existPrev" style="width: 50px; height: 50px; border: 1px solid #000000; margin: 5px">이전</span>
-                <span style="width: 50px; height: 50px; border: 1px solid black;  margin: 5px"  v-for="i of arr" :key="i">{{i}}</span>
+                <span style="width: 50px; height: 50px; border: 1px solid black;  margin: 5px"  v-for="i of pages" :key="i">{{i}}</span>
                 <span v-if = "existNext" style="width: 50px; height: 50px; border: 1px solid black;  margin: 5px">다음</span>
             </div>
 
@@ -42,21 +42,33 @@
 
 <script>
     import {mapState} from 'vuex'
+    import axios from "axios";
     export default {
         name: "Retriever",
         data () {
                 return {
                      existPrev : false, existNext : true,
-                    arr : [6,7,8,9,10]
+                   pages : [1,2,3,4,5],
+                    pageNumber : 0,
+                    list :[],
+                    pager : {},
+                    totalCount : '',
             }
         },
         created() {
-            alert('무비에서 크리티드 실행됨')
+            axios.get(`${this.$store.state.search.context}/movies/${this.$store.state.search.searchWord}/${this.$store.state.search.pageNumber}`)
+                .then(res=>{
+                   res.data.list.forEach(elem=>this.list.push(elem))
+                    this.pager= res.data.pager
+                })
+                .catch(()=>{
+                    alert('영화 통신 실패')
+                })
         },
         computed : {
             ...mapState({
-                searchResult : (state)=> state.crawling.searchResult,
-                count : (state) =>  state.crawling.count,
+                searchResult : (state)=> state.search.searchResult,
+                count : (state) =>  state.search.count,
             })
         },
     }

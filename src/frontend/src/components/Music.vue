@@ -50,7 +50,7 @@
 <script>
     import {mapState} from 'vuex'
     export default {
-        name: "Retriever",
+        name: "Music",
         data () {
                 return { page: 1,
             }

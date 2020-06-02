@@ -1,10 +1,7 @@
 package com.lambda.web.movie;
 
 import com.lambda.web.mappers.MovieMapper;
-import com.lambda.web.proxy.Box;
-import com.lambda.web.proxy.IFunction;
-import com.lambda.web.proxy.Pager;
-import com.lambda.web.proxy.Proxy;
+import com.lambda.web.proxy.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins="*", allowedHeaders = "*")
-@RequestMapping("/movie")
+@RequestMapping("/movies")
 @RestController
 public class MovieController {
 @Autowired Pager pager;
@@ -21,7 +18,9 @@ public class MovieController {
 MovieMapper movieMapper;
 @Autowired Proxy pxy;
 @Autowired Box<Object> box;
-    @GetMapping("/list/{pageNumber}/{searchWord}") //pageSize, nowPage
+@Autowired MovieRepository movieRepository;
+@Autowired Crawler crawler;
+    @GetMapping("/{searchWord}/{pageNumber}") //pageSize, nowPage
     public Map<?,?> list(@PathVariable("pageNumber") String pageNumber,
                     @PathVariable("searchWord") String searchWord) {
         if(searchWord.equals("")){
@@ -29,6 +28,7 @@ MovieMapper movieMapper;
         }else{
             pxy.print("검색어"+searchWord);
         }
+        if (movieRepository.count() ==0)crawler.naverMovie();
         pager.setNowPage(pxy.integar(pageNumber));
         pager.setBlockSize(5);
         pager.setPageSize(5);
