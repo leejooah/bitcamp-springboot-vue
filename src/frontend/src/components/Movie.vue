@@ -25,9 +25,10 @@
                 </v-simple-table>
             <div class="text-center">
                 <div style="margin: 0 auto; width: 500px; height: 100px;"></div>
-                <span v-if="pager.existPrev" style="width: 50px; height: 50px; border: 1px solid #000000; margin: 5px">이전</span>
-                <span style="width: 50px; height: 50px; border: 1px solid black;  margin: 5px"  v-for="i of pages" :key="i">{{i}}</span>
-                <span v-if = "pager.existNext" style="width: 50px; height: 50px; border: 1px solid black;  margin: 5px">다음</span>
+                <span @click="transferPage(pager.preBlock+1)" v-if="pager.existPrev" style="width: 50px; height: 50px; border: 1px solid #000000; margin: 5px">이전</span>
+                <span @click="transferPage(i)" v-for="i of pages" :key="i" style="width: 50px; height: 50px; border: 1px solid black;  margin: 5px" >{{i}}</span>
+                <span @click="transferPage(pager.nextBlock+1)" v-if = "pager.existNext" style="width: 50px; height: 50px; border: 1px solid black;  margin: 5px">다음</span>
+
             </div>
 
 <!--                        <v-pagination-->
@@ -42,42 +43,36 @@
 
 <script>
     import {mapState} from 'vuex'
-    import axios from "axios";
+    import {proxy} from './mixins/proxy'
     export default {
+        mixins : [proxy],
         name: "Movie",
         data () {
-                return {
-                    pageNumber: 0,
-                   pages : [],
-                    list :[],
-                    pager : {},
-                    totalCount : ''
+            return {
+
             }
         },
-        created() {
-            axios.get(`${this.$store.state.search.context}/movies/${this.$store.state.search.searchWord}/${this.$store.state.search.pageNumber}`)
-                .then(res=>{
-                   res.data.list.forEach(elem=>this.list.push(elem))
-                    this.pager= res.data.pager
-                    let i =  this.pager.startPage+1
-                    let arr = []
-                    console.log(`페이지 끝 : ${this.pager.endPage}`)
-                    for(; i<= this.pager.endPage+1;i++){
-                        arr.push(i)
-                    }
-                    this.pages=arr
-                })
-                .catch(()=>{
-                    alert('영화 통신 실패')
-                })
+        methods : {
+            transferPage(d){
+                this.$store.dispatch('search/transferPage',{cate : 'movies',searchWord : 'null', pageNumber : d-1})
+            }
         },
         computed : {
             ...mapState({
-                searchResult : (state)=> state.search.searchResult,
-                count : (state) =>  state.search.count,
+                list : (state)=> state.search.list,
+                pages : (state) =>  state.search.pages,
+                pager : (state) => state.search.pager
+
             })
         },
+        created() {
+        let json = proxy.methods.paging(`${this.$store.state.search.context}/movies/null/0`)
+            this.$store.state.search.list = json.movies
+            this.$store.state.search.pages = json.pages
+            this.$store.state.search.pager = json.temp
+        },
     }
+
 </script>
 
 <style scoped>

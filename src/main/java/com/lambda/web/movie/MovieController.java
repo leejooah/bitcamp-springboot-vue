@@ -21,16 +21,16 @@ MovieMapper movieMapper;
 @Autowired MovieRepository movieRepository;
 @Autowired Crawler crawler;
     @GetMapping("/{searchWord}/{pageNumber}") //pageSize, nowPage
-    public Map<?,?> list(@PathVariable("pageNumber") String pageNumber,
+    public Map<?,?> list(@PathVariable("pageNumber") int pageNumber,
                     @PathVariable("searchWord") String searchWord) {
         if(searchWord.equals("")){
             pxy.print("검색어가 없음");
         }else{
             pxy.print("검색어"+searchWord);
         }
-        pxy.print(pageNumber);
+        pxy.print("넘어온 페이지번호"+pageNumber);
         if (movieRepository.count() ==0)crawler.naverMovie();
-        pager.setNowPage(pxy.integar(pageNumber));
+        pager.setNowPage(pageNumber);
         pager.setBlockSize(5);
         pager.setPageSize(5);
         pager.paging();

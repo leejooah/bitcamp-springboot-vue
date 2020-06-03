@@ -32,8 +32,8 @@ const actions = {
                      authorization: 'JWT fefege..',
                      Accept : 'application/json',
                      'Content-Type': 'application/json'})
-                    .then(({data})=>{
-                            commit('search',data)
+                    .then((res)=>{
+                            commit('search',res.data)
                             router.push('/retriever')
                     })
                 .catch(()=>

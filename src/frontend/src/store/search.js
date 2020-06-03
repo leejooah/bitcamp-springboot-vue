@@ -1,9 +1,9 @@
 import router from '@/router'
+import axios from 'axios'
 const state = {
     context : 'http://localhost:5000',
-    soccers : [],
-    movies : [],
-    musics : [],
+   list : [],
+    pages : [],
     pager :  {},
     pageNumber: 0,
     searchWord: 'null'
@@ -23,21 +23,36 @@ const actions = {
                 break;
         }
 
-    }
+    },
+     async transferPage({commit},payload){
+        axios.get(state.context+`/${payload.cate}/${payload.searchWord}/${payload.pageNumber}`)
+            .then(({data})=>{
+                    commit('transfer',data)
+            }
 
+            )
+
+     }
 }
 const mutations = {
     searchWord(state,data){
-        alert(`뮤테이션:: ${data}`)
         state.searchWord = data
+    },
+    transfer(state, data){
+        state.pager = data.pager
+        state.list = data.list
+        state.pages=[]
+        let i = data.pager.startPage+1
+        for(; i<=data.pager.endPage+1;i++){
+            state.pages.push(i)
+        }
     }
+
 }
-const getters ={}
 export default {
     name : 'search',
     namespaced : true,
     state,
     actions,
-    mutations,
-    getters
+    mutations
 }
