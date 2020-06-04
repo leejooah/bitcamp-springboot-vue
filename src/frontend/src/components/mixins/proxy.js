@@ -2,6 +2,9 @@ import axios from "axios";
 
 export const proxy={
     methods:{
+        tester(d){
+            alert(d)
+        },
         paging(url) {
             const movies = []
             const pages = []
@@ -18,11 +21,23 @@ export const proxy={
                 temp.existPrev = pager.existPrev
                 temp.existNext = pager.existNext
                 temp.nextBlock = pager.nextBlock
+                temp.preBlock = pager.preBlock
             })
                 .catch(()=>{
                     alert('통신 실패')
                 })
             return {movies, pages, temp}
+        },
+        detail(url){
+            let item ={}
+            axios.get(url)
+                .then(({data})=>{
+               item =data
+                })
+                .catch(()=>{
+                    alert('통신 실패')
+                })
+            return {item}
         }
     }
 

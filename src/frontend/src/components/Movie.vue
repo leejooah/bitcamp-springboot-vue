@@ -2,6 +2,8 @@
     <v-app>
         <v-container>
             <h3>총 결과 : {{pager.rowCount}}</h3>
+            <span style="float : right"><input id="searchWord" type="text" style="border: 1px solid black" @keyup.enter="search">
+                <button @click="search">검색</button></span><br>
                 <v-simple-table>
                     <template v-slot:default>
                             <thead>
@@ -17,7 +19,7 @@
                             <tr v-for="item of list" :key="item.movieSeq">
                                 <td>{{item.movieSeq}}</td>
                                 <td>{{ item.rank}}</td>
-                                <td>{{item.title}}</td>
+                                <td><a @click="retrieveOne(item.movieSeq)">{{item.title}}</a></td>
                                 <td>{{item.rankDate}}</td>
                             </tr>
                             </tbody>
@@ -44,6 +46,7 @@
 <script>
     import {mapState} from 'vuex'
     import {proxy} from './mixins/proxy'
+    import router from '@/router'
     export default {
         mixins : [proxy],
         name: "Movie",
@@ -55,6 +58,19 @@
         methods : {
             transferPage(d){
                 this.$store.dispatch('search/transferPage',{cate : 'movies',searchWord : 'null', pageNumber : d-1})
+               sessionStorage.setItem('lastPage',d-1)
+
+            },
+            search(){
+                let searchWord = document.getElementById('searchWord').value
+                if(searchWord == '') searchWord='null'
+                this.$store.dispatch('search/transferPage',{cate : 'movies',
+                                                                                                                                                searchWord : searchWord,
+                                                                                                                                                pageNumber : 0 })
+            },
+            retrieveOne(movieSeq){
+                router.push('/detail')
+                sessionStorage.setItem('movieSeq',movieSeq)
             }
         },
         computed : {
@@ -66,7 +82,10 @@
             })
         },
         created() {
-        let json = proxy.methods.paging(`${this.$store.state.search.context}/movies/null/0`)
+            if(sessionStorage.getItem('lastPage')==null){
+                sessionStorage.setItem('lastPage',0)
+            }
+        let json = proxy.methods.paging(`${this.$store.state.search.context}/movies/null/${sessionStorage.getItem('lastPage')}`)
             this.$store.state.search.list = json.movies
             this.$store.state.search.pages = json.pages
             this.$store.state.search.pager = json.temp

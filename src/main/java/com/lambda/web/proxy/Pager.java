@@ -17,9 +17,6 @@ private boolean existPrev, existNext;
 private String searchWord;
 public void paging(){
     rowCount =movieMapper.countMovies();
-//    pageSize = 5;
-//    blockSize = 5;
-//    nowPage = 0;
 pageCount = (rowCount%pageSize!=0)? rowCount/pageSize+1 : rowCount/pageSize;
 blockCount = (pageCount%blockSize!=0)?pageCount/blockSize+1 : pageCount/blockSize;
 startRow = nowPage*pageSize;

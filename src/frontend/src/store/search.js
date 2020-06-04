@@ -6,7 +6,8 @@ const state = {
     pages : [],
     pager :  {},
     pageNumber: 0,
-    searchWord: 'null'
+    searchWord: 'null',
+    item : {}
 }
 const actions = {
     async find({commit},searchWord) {
@@ -32,7 +33,9 @@ const actions = {
 
             )
 
-     }
+     },
+
+
 }
 const mutations = {
     searchWord(state,data){
@@ -46,7 +49,7 @@ const mutations = {
         for(; i<=data.pager.endPage+1;i++){
             state.pages.push(i)
         }
-    }
+    },
 
 }
 export default {

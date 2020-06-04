@@ -27,6 +27,7 @@
         },
         methods : {
             search() {
+                sessionStorage.clear()
                 this.$store.dispatch('search/find', this.searchWord)
                 }
             }
