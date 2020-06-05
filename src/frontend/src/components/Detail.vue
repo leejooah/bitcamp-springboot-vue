@@ -1,6 +1,10 @@
 <template>
-        <v-simple-table>
+    <div>
+    <span style="float : right"><input id="searchWord" type="text" style="border: 1px solid black" @keyup.enter="search">
+                <button @click="search">검색</button></span><br><br>
+        <v-simple-table class="border_black">
             <template v-slot:default>
+
                 <thead>
                 <tr>
                     <th class="text-left">Image</th>
@@ -22,25 +26,33 @@
                 </tbody>
             </template>
         </v-simple-table>
+    </div>
 </template>
 
 <script>
-    import {mapState} from 'vuex'
-    import {proxy} from './mixins/proxy'
+import {mapState} from 'vuex'
+   import '@/assets/css/main.css'
+   import axios from "axios";
     export default {
-        name: "Detail",
         computed : {
             ...mapState({
                 item : (state) => state.search.item
             })
         },
-        created(){
-            alert(sessionStorage.getItem('movieSeq'))
-           let json = proxy.methods.detail(`${this.$store.state.search.context}/movies/${sessionStorage.getItem('movieSeq')}`)
-            json.item = this.$store.state.search.item
+        created() {
+            axios.
+            get(this.$store.state.search.context+`/movies/`+sessionStorage.getItem('movieSeq'))
+                .then(({data})=>{
+                    this.$store.state.search.item = data
+                })
+
         }
 
+
     }
+
+
+
 </script>
 
 <style scoped>

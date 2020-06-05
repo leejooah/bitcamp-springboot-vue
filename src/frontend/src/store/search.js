@@ -38,6 +38,7 @@ const actions = {
 
 }
 const mutations = {
+
     searchWord(state,data){
         state.searchWord = data
     },

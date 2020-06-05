@@ -5,7 +5,7 @@ export const proxy={
         tester(d){
             alert(d)
         },
-        paging(url) {
+       paging(url) {
             const movies = []
             const pages = []
             let temp = {}
@@ -28,18 +28,11 @@ export const proxy={
                 })
             return {movies, pages, temp}
         },
-        detail(url){
-            let item ={}
-            axios.get(url)
-                .then(({data})=>{
-               item =data
-                })
-                .catch(()=>{
-                    alert('통신 실패')
-                })
-            return {item}
-        }
-    }
 
+
+
+
+
+}
 
 }

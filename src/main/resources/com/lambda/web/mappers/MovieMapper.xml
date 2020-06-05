@@ -7,7 +7,7 @@
     <insert
             id="insertMovie"
             parameterType="com.lambda.web.movie.MovieDTO"
-         >
+    >
         insert rank, title, rank_date into movie values (#{rank},#{title},#{rankDate})
     </insert>
 
@@ -25,16 +25,16 @@
         delete from movie where movie_seq like #{movieSeq}
     </delete>
     <select id="selectMovies" resultType="com.lambda.web.movie.MovieDTO"
-    parameterType="com.lambda.web.proxy.Pager">
-  select movie_seq movieSeq, rank,title,rank_date rankDate
-  from movie
+            parameterType="com.lambda.web.proxy.Pager">
+        select movie_seq movieSeq, rank,title,rank_date rankDate
+        from movie
 
         <if test="searchWord != null">
             where title like '%${searchWord}%'
         </if>
         limit #{startRow}, #{pageSize}
 
-</select>
+    </select>
     <select id="selectMovie" resultType="com.lambda.web.movie.MovieDTO"
             parameterType="string">
   select movie_seq movieSeq, rank,title,rank_date rankDate

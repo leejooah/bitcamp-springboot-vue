@@ -1,0 +1,9 @@
+.border_black{
+    border: 1px solid black;
+}
+.border_black tr{
+     border: 1px solid black;
+ }
+.border_black tr th{
+    border: 1px solid black;
+}

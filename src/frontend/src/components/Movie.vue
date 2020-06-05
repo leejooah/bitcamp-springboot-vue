@@ -47,6 +47,7 @@
     import {mapState} from 'vuex'
     import {proxy} from './mixins/proxy'
     import router from '@/router'
+
     export default {
         mixins : [proxy],
         name: "Movie",
@@ -56,22 +57,25 @@
             }
         },
         methods : {
-            transferPage(d){
-                this.$store.dispatch('search/transferPage',{cate : 'movies',searchWord : 'null', pageNumber : d-1})
-               sessionStorage.setItem('lastPage',d-1)
+            transferPage(d) {
+                this.$store.dispatch('search/transferPage', {cate: 'movies', searchWord: 'null', pageNumber: d - 1})
+                sessionStorage.setItem('lastPage', d - 1)
 
             },
-            search(){
+            search() {
                 let searchWord = document.getElementById('searchWord').value
-                if(searchWord == '') searchWord='null'
-                this.$store.dispatch('search/transferPage',{cate : 'movies',
-                                                                                                                                                searchWord : searchWord,
-                                                                                                                                                pageNumber : 0 })
+                if (searchWord == '') searchWord = 'null'
+                this.$store.dispatch('search/transferPage', {
+                    cate: 'movies',
+                    searchWord: searchWord,
+                    pageNumber: 0
+                })
             },
-            retrieveOne(movieSeq){
+            retrieveOne(movieSeq) {
                 router.push('/detail')
-                sessionStorage.setItem('movieSeq',movieSeq)
-            }
+               sessionStorage.setItem('movieSeq',movieSeq)
+                }
+
         },
         computed : {
             ...mapState({
@@ -86,7 +90,7 @@
                 sessionStorage.setItem('lastPage',0)
             }
         let json = proxy.methods.paging(`${this.$store.state.search.context}/movies/null/${sessionStorage.getItem('lastPage')}`)
-            this.$store.state.search.list = json.movies
+           this.$store.state.search.list = json.movies
             this.$store.state.search.pages = json.pages
             this.$store.state.search.pager = json.temp
         },
