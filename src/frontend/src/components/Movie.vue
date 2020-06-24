@@ -50,7 +50,6 @@
 
     export default {
         mixins : [proxy],
-        name: "Movie",
         data () {
             return {
 
